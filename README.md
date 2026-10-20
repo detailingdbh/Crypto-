@@ -53,6 +53,8 @@ Ouvre `config.yaml` et choisis ton exchange (`revolutx`, `binance`, `kraken`…)
 ```bash
 pip install -r requirements.txt
 python backtest.py --days 180
+# ou avec Docker, sans rien installer :
+docker compose run --rm bot python backtest.py --days 180
 ```
 
 Le backtest affiche le gain ou la perte, le nombre de trades, le taux de trades gagnants et la pire baisse. Il compare aussi avec « acheter et garder ». Si la stratégie fait moins bien que « acheter et garder », change les réglages ou n'active pas le mode réel.
@@ -62,6 +64,7 @@ Le backtest affiche le gain ou la perte, le nombre de trades, le taux de trades 
 Tu as besoin d'une machine allumée en permanence. Un petit serveur VPS à 4-6 €/mois (Hetzner, OVH, Scaleway…) suffit. Installe Docker dessus, puis :
 
 ```bash
+mkdir -p data && chown 1000:1000 data   # le bot (utilisateur 1000 dans Docker) doit pouvoir écrire ici
 docker compose up -d --build     # démarre le bot en arrière-plan
 docker compose logs -f           # voir ce qu'il fait en direct
 docker compose down              # l'arrêter
