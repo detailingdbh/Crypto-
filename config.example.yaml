@@ -1,0 +1,44 @@
+# Copie ce fichier en config.yaml puis adapte-le.
+
+# Nom de l'exchange dans ccxt : revolutx, binance, kraken, coinbase, bitget...
+exchange: revolutx
+
+# paper = simulation avec de l'argent fictif (par défaut, recommandé)
+# live  = vrais ordres avec ton argent (demande LIVE_TRADING_CONFIRMED=oui dans .env)
+mode: paper
+
+# Paires surveillées (format ccxt BASE/QUOTE). Toutes doivent avoir la même devise de cotation.
+symbols:
+  - BTC/EUR
+  - ETH/EUR
+  - SOL/EUR
+
+# Unité de temps des bougies analysées (1m, 5m, 15m, 1h, 4h, 1d)
+timeframe: 1h
+# Nombre de bougies téléchargées à chaque analyse (doit dépasser trend_ema)
+candles: 300
+# Pause entre deux analyses complètes, en secondes
+poll_seconds: 60
+
+strategy:
+  ema_fast: 12        # moyenne mobile rapide
+  ema_slow: 26        # moyenne mobile lente
+  trend_ema: 200      # filtre de tendance : achat seulement si prix > EMA200 (0 = désactivé)
+  rsi_period: 14
+  rsi_max_buy: 70     # pas d'achat si RSI au-dessus (marché suracheté)
+  atr_period: 14
+
+risk:
+  quote_per_trade: 20       # montant investi par trade (en devise de cotation, ex. 20 EUR)
+  max_open_positions: 3     # nombre maximum de positions ouvertes en même temps
+  stop_loss_atr: 2.0        # stop loss = prix d'entrée - 2 x ATR
+  take_profit_atr: 4.0      # take profit = prix d'entrée + 4 x ATR
+  max_daily_loss: 50        # pertes réalisées max par jour (UTC) avant pause des achats
+  max_trades_per_day: 10    # nombre max d'achats par jour
+
+paper:
+  starting_balance: 1000    # solde fictif de départ
+  fee_rate: 0.001           # frais simulés (0.1 %)
+
+# Dossier où le bot enregistre ses positions et son historique
+data_dir: data
